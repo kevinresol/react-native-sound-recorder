@@ -146,6 +146,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     NSError* err = nil;
     
+    NSString* url = [_recorder url].absoluteString;
     [_recorder stop];
     _recorder = nil; // release it
     
@@ -164,7 +165,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
         return;
     }
     
-    resolve([_recorder url].absoluteString);
+    resolve(url);
 
 }
 
