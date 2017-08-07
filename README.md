@@ -76,17 +76,17 @@ function stop():Promise<String>;
 
 iOS:
 
-- `quality`:Enum (Check out the constants prefixed with `"QUALITY_"`)
-- `format`:Enum (Check out the constants prefixed with `"FORMAT_"`)
+- `quality`:Enum (Check out the [constants][ios constants] prefixed with `"QUALITY_"`)
+- `format`:Enum (Check out the [constants][ios constants] prefixed with `"FORMAT_"`)
 - `bitRate`:Int, default: not set (will fail on iPhone5 if set)
 - `channels`:Int (1 or 2), default: 1
 - `sampleRate`:Int default: 16000
 
 Android:
 
-- `source`:Enum (Check out the constants prefixed with `"SOURCE_"`)
-- `format`:Enum (Check out the constants prefixed with `"FORMAT_"`)
-- `encoder`:Enum (Check out the constants prefixed with `"ENCODER_"`)
+- `source`:Enum (Check out the [constants][android constants] prefixed with `"SOURCE_"`)
+- `format`:Enum (Check out the [constants][android constants] prefixed with `"FORMAT_"`)
+- `encoder`:Enum (Check out the [constants][android constants] prefixed with `"ENCODER_"`)
 - `channels`:Int (1 or 2), default: 1
 - `bitRate`:Int, default: 64000
 - `sampleRate`:Int default: 16000
@@ -98,3 +98,6 @@ Note that the above enums are platform-specific.
 - PATH_CACHE 
 - PATH_DOCUMENT 
 - PATH_LIBRARY (N/A on Android)
+
+[android constants]: https://github.com/kevinresol/react-native-sound-recorder/blob/master/android/src/main/java/com/reactlibrary/RNSoundRecorderModule.java#L40
+[ios constants]: https://github.com/kevinresol/react-native-sound-recorder/blob/master/ios/RNSoundRecorder.m#L15
