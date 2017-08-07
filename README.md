@@ -14,7 +14,7 @@ At the time of writing, the above libaries are either inconsistent or incomplete
 
 For example, the same `startRecording` call returns a `Promise` on Android but `null` in iOS.
 
-Or `stopRecording` doesn't gives a promise/callback at all. So forcing user to do silly things like "wait for 1 second" in order to make sure file is well written to disk.
+Or `stopRecording` doesn't give a promise/callback at all. So forcing user to do silly things like "wait for 1 second" in order to make sure file is well written to disk.
 
 ## Getting started
 
@@ -48,10 +48,27 @@ Or `stopRecording` doesn't gives a promise/callback at all. So forcing user to d
   	```
       compile project(':react-native-sound-recorder')
   	```
+## Permissions
+
+**iOS**: Add the following entry to `Info.plist`:
+
+```
+<key>NSMicrophoneUsageDescription</key>
+<string>This sample uses the microphone to record your speech and convert it to text.</string>
+```
+
+**Android**: Add the following entry to `AndroidManifest.xml`:
+
+```
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
+
 
 ## Usage
 ```javascript
 import SoundRecorder from 'react-native-sound-recorder';
+
+// Note: You may need to request runtime permission(s) first.
 
 SoundRecorder.start(SoundRecorder.PATH_CACHE + '/test.mp4')
 	.then(function() {
