@@ -15,35 +15,95 @@ RCT_EXPORT_MODULE()
 - (NSDictionary *)constantsToExport
 {
     return @{
-        @"CACHE_PATH": [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject],
-        @"DOCUMENT_PATH": [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject],
-        @"LIBRARY_PATH": [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject]
+        @"PATH_CACHE": [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject],
+        @"PATH_DOCUMENT": [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject],
+        @"PATH_LIBRARY": [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject],
+        
+        @"FORMAT_LinearPCM": @(kAudioFormatLinearPCM),
+        @"FORMAT_AC3": @(kAudioFormatAC3),
+        @"FORMAT_60958AC3": @(kAudioFormat60958AC3),
+        @"FORMAT_AppleIMA4": @(kAudioFormatAppleIMA4),
+        @"FORMAT_MPEG4AAC": @(kAudioFormatMPEG4AAC),
+        @"FORMAT_MPEG4CELP": @(kAudioFormatMPEG4CELP),
+        @"FORMAT_MPEG4HVXC": @(kAudioFormatMPEG4HVXC),
+        @"FORMAT_MPEG4TwinVQ": @(kAudioFormatMPEG4TwinVQ),
+        @"FORMAT_MACE3": @(kAudioFormatMACE3),
+        @"FORMAT_MACE6": @(kAudioFormatMACE6),
+        @"FORMAT_ULaw": @(kAudioFormatULaw),
+        @"FORMAT_ALaw": @(kAudioFormatALaw),
+        @"FORMAT_QDesign": @(kAudioFormatQDesign),
+        @"FORMAT_QDesign2": @(kAudioFormatQDesign2),
+        @"FORMAT_QUALCOMM": @(kAudioFormatQUALCOMM),
+        @"FORMAT_MPEGLayer1": @(kAudioFormatMPEGLayer1),
+        @"FORMAT_MPEGLayer2": @(kAudioFormatMPEGLayer2),
+        @"FORMAT_MPEGLayer3": @(kAudioFormatMPEGLayer3),
+        @"FORMAT_TimeCode": @(kAudioFormatTimeCode),
+        @"FORMAT_MIDIStream": @(kAudioFormatMIDIStream),
+        @"FORMAT_ParameterValueStream": @(kAudioFormatParameterValueStream),
+        @"FORMAT_AppleLossless": @(kAudioFormatAppleLossless),
+        @"FORMAT_MPEG4AAC_HE": @(kAudioFormatMPEG4AAC_HE),
+        @"FORMAT_MPEG4AAC_LD": @(kAudioFormatMPEG4AAC_LD),
+        @"FORMAT_MPEG4AAC_ELD": @(kAudioFormatMPEG4AAC_ELD),
+        @"FORMAT_MPEG4AAC_ELD_SBR": @(kAudioFormatMPEG4AAC_ELD_SBR),
+        @"FORMAT_MPEG4AAC_HE_V2": @(kAudioFormatMPEG4AAC_HE_V2),
+        @"FORMAT_MPEG4AAC_Spatial": @(kAudioFormatMPEG4AAC_Spatial),
+        @"FORMAT_AMR": @(kAudioFormatAMR),
+        @"FORMAT_Audible": @(kAudioFormatAudible),
+        @"FORMAT_iLBC": @(kAudioFormatiLBC),
+        @"FORMAT_DVIIntelIMA": @(kAudioFormatDVIIntelIMA),
+        @"FORMAT_MicrosoftGSM": @(kAudioFormatMicrosoftGSM),
+        @"FORMAT_AES3": @(kAudioFormatAES3),
+        @"FORMAT_AMR_WB": @(kAudioFormatAMR_WB),
+        @"FORMAT_EnhancedAC3": @(kAudioFormatEnhancedAC3),
+        @"FORMAT_MPEG4AAC_ELD_V2": @(kAudioFormatMPEG4AAC_ELD_V2),
+        
+        @"QUALITY_MAX": @(AVAudioQualityMax),
+        @"QUALITY_MIN": @(AVAudioQualityMin),
+        @"QUALITY_LOW": @(AVAudioQualityLow),
+        @"QUALITY_MEDIUM": @(AVAudioQualityMedium),
+        @"QUALITY_HIGH": @(AVAudioQualityHigh)
+        
     };
 }
 
-RCT_EXPORT_METHOD(start:(NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(start:(NSString *)path
+                  options:(NSDictionary *)options
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     if(_recorder && _recorder.isRecording) {
         reject(@"already_recording", @"Already Recording", nil);
         return;
     }
     
-    NSNumber* _quality = [NSNumber numberWithInt:AVAudioQualityHigh];
-    NSNumber* _encoding = [NSNumber numberWithInt:kAudioFormatMPEG4AAC];
-    NSNumber* _channels = [NSNumber numberWithInt:1];
-    NSNumber* _sampleRate = [NSNumber numberWithFloat:16000.0];
-
-    NSDictionary* settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                      _quality, AVEncoderAudioQualityKey,
-                      _encoding, AVFormatIDKey,
-                      _channels, AVNumberOfChannelsKey,
-                      _sampleRate, AVSampleRateKey,
-                      nil];
-
+    NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
+    
+    // https://developer.apple.com/documentation/coreaudio/core_audio_data_types/1572096-audio_data_format_identifiers
+    NSNumber* format = [options objectForKey:@"format"];
+    if(!format) format = @(kAudioFormatMPEG4AAC);
+    [settings setObject:format forKey:AVFormatIDKey];
+    
+    NSNumber* channels = [options objectForKey:@"channels"];
+    if(!channels) channels = @1;
+    [settings setObject:channels forKey:AVNumberOfChannelsKey];
+    
+    NSNumber* bitRate = [options objectForKey:@"bitRate"];
+    if(bitRate) [settings setObject:bitRate forKey:AVEncoderBitRateKey];
+    
+    NSNumber* sampleRate = [options objectForKey:@"sampleRate"];
+    if(!sampleRate) sampleRate = @16000;
+    [settings setObject:sampleRate forKey:AVSampleRateKey];
+    
+    NSNumber* quality = [options objectForKey:@"quality"];
+    if(!quality) quality = @(AVAudioQualityMax);
+    [settings setObject:quality forKey:AVEncoderAudioQualityKey];
+    
+    
+    
     NSError* err = nil;
 
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&err];
+    [session setCategory:AVAudioSessionCategoryRecord error:&err];
     
     if (err) {
         reject(@"init_session_error", [[err userInfo] description], err);
@@ -88,11 +148,19 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     [_recorder stop];
     _recorder = nil; // release it
-
-    [[AVAudioSession sharedInstance] setActive:NO error:&err];
+    
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    [session setActive:NO error:&err];
     
     if (err) {
         reject(@"session_set_active_error", [[err userInfo] description], err);
+        return;
+    }
+    
+    [session setCategory:AVAudioSessionCategoryPlayback error:&err];
+    
+    if (err) {
+        reject(@"reset_session_error", [[err userInfo] description], err);
         return;
     }
     

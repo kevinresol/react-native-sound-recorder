@@ -45,9 +45,50 @@
 
 ## Usage
 ```javascript
-import RNSoundRecorder from 'react-native-sound-recorder';
+import SoundRecorder from 'react-native-sound-recorder';
 
-// TODO: What do with the module?
-RNSoundRecorder;
+SoundRecorder.start(SoundRecorder.PATH_CACHE + '/test.mp4')
+	.then(function() {
+		console.log('started recording');
+	});
+
+SoundRecorder.stop()
+	.then(function(path) {
+		console.log('stopped recording, audio file saved at: ' + path);
+	});
+	
 ```
   
+  
+## API
+```haxe
+function start(path:String, ?options:Object):Promise<Void>;
+function stop():Promise<String>;
+```
+
+### Options:
+
+iOS:
+
+- `quality`:Enum (Check out the constants prefixed with `"QUALITY_"`)
+- `format`:Enum (Check out the constants prefixed with `"FORMAT_"`)
+- `bitRate`:Int, default: not set (will fail on iPhone5 if set)
+- `channels`:Int (1 or 2), default: 1
+- `sampleRate`:Int default: 16000
+
+Android:
+
+- `source`:Enum (Check out the constants prefixed with `"SOURCE_"`)
+- `format`:Enum (Check out the constants prefixed with `"FORMAT_"`)
+- `encoder`:Enum (Check out the constants prefixed with `"ENCODER_"`)
+- `channels`:Int (1 or 2), default: 1
+- `bitRate`:Int, default: 64000
+- `sampleRate`:Int default: 16000
+
+Note that the above enums are platform-specific.
+
+### Path Constants
+
+- PATH_CACHE 
+- PATH_DOCUMENT 
+- PATH_LIBRARY (N/A on Android)
