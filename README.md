@@ -49,15 +49,6 @@ Or `stopRecording` doesn't gives a promise/callback at all. So forcing user to d
       compile project(':react-native-sound-recorder')
   	```
 
-#### Windows
-[Read it! :D](https://github.com/ReactWindows/react-native)
-
-1. In Visual Studio add the `RNSoundRecorder.sln` in `node_modules/react-native-sound-recorder/windows/RNSoundRecorder.sln` folder to their solution, reference from their app.
-2. Open up your `MainPage.cs` app
-  - Add `using Cl.Json.RNSoundRecorder;` to the usings at the top of the file
-  - Add `new RNSoundRecorderPackage()` to the `List<IReactPackage>` returned by the `Packages` method
-
-
 ## Usage
 ```javascript
 import SoundRecorder from 'react-native-sound-recorder';
