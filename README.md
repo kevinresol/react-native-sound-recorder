@@ -1,6 +1,21 @@
 
 # react-native-sound-recorder
 
+No-hassle Sound Recorder for React Native.
+
+#### There are existing libraries out in the wild
+
+- https://github.com/MisterAlex95/react-native-record-sound
+- https://github.com/jsierles/react-native-audio
+
+#### Why reinvent the wheel?
+
+At the time of writing, the above libaries are either inconsistent or incomplete.
+
+For example, the same `startRecording` call returns a `Promise` on Android but `null` in iOS.
+
+Or `stopRecording` doesn't gives a promise/callback at all. So forcing user to do silly things like "wait for 1 second" in order to make sure file is well written to disk.
+
 ## Getting started
 
 `$ npm install react-native-sound-recorder --save`
