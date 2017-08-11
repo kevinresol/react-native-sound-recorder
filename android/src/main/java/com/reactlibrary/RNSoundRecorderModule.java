@@ -1,13 +1,16 @@
 
 package com.reactlibrary;
 
+import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -127,14 +130,29 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
       return;
     }
 
-    mRecorder.stop();
+    try {
+      mRecorder.stop();
+    } catch (Exception e) {
+      mRecorder.release();
+      mRecorder = null;
+      promise.reject("stopping_failed", "Stop failed: " + e);
+      return;
+    }
+
     mRecorder.release();
     mRecorder = null;
 
-    String output = mOutput;
+    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+    retriever.setDataSource(mOutput);
+    int duration = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+
+    WritableMap response = Arguments.createMap();
+
+    response.putInt("duration", duration);
+    response.putString("path", mOutput);
     mOutput = null;
 
-    promise.resolve(output);
+    promise.resolve(response);
   }
 
 

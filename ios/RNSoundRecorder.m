@@ -146,8 +146,14 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     NSError* err = nil;
     
-    NSString* url = [_recorder url].absoluteString;
     [_recorder stop];
+    
+    // prepare the response
+    NSString* url = [_recorder url].absoluteString;
+    url = [url substringFromIndex:NSMaxRange([url rangeOfString:@"://"])]; // trim the scheme (file://)
+    AVAudioPlayer* player = [[AVAudioPlayer alloc] initWithContentsOfURL:[_recorder url] error:nil];
+    NSDictionary* response = @{@"duration": @(player.duration * 1000), @"path": url};
+    
     _recorder = nil; // release it
     
     AVAudioSession* session = [AVAudioSession sharedInstance];
@@ -165,7 +171,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
         return;
     }
     
-    resolve(url);
+    resolve(response);
 
 }
 
