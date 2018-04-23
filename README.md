@@ -87,6 +87,8 @@ SoundRecorder.stop()
 ```haxe
 function start(path:String, ?options:Object):Promise<Void>;
 function stop():Promise<String>;
+function pause():Promise<Void>;
+function resume():Promise<Void>;
 ```
 
 ### Options:
