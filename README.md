@@ -76,8 +76,8 @@ SoundRecorder.start(SoundRecorder.PATH_CACHE + '/test.mp4')
 	});
 
 SoundRecorder.stop()
-	.then(function(path) {
-		console.log('stopped recording, audio file saved at: ' + path);
+	.then(function(result) {
+		console.log('stopped recording, audio file saved at: ' + result.path);
 	});
 	
 ```
@@ -86,7 +86,7 @@ SoundRecorder.stop()
 ## API
 ```haxe
 function start(path:String, ?options:Object):Promise<Void>;
-function stop():Promise<String>;
+function stop():Promise<{path:String, duration:Int}>;
 function pause():Promise<Void>;
 function resume():Promise<Void>;
 ```
