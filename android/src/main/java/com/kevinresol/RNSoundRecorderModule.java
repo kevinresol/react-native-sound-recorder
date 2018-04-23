@@ -1,5 +1,4 @@
-
-package com.reactlibrary;
+package com.kevinresol.react_native_sound_recorder;
 
 import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
@@ -155,6 +154,36 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
     promise.resolve(response);
   }
 
+  @ReactMethod
+  public void pause(Promise promise) {
+    if(mRecorder == null) {
+      promise.reject("not_recording", "Not Recording");
+      return;
+    }
+    
+    try {
+      mRecorder.pause();
+      promise.resolve(null);
+    } catch (Exception e) {
+      promise.reject("pausing_failed", "Pause failed: " + e);
+    }
+  }
+
+  @ReactMethod
+  public void resume(Promise promise) {
+    if(mRecorder == null) {
+      promise.reject("not_recording", "Not Recording");
+      return;
+    }
+    
+    try {
+      mRecorder.resume();
+      promise.resolve(null);
+    } catch (Exception e) {
+      promise.reject("resuming_failed", "Resume failed: " + e);
+    }
+    
+  }
 
 
 }

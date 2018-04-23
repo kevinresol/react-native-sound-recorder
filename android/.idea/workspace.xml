@@ -30,7 +30,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="RNSoundRecorderModule.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/reactlibrary/RNSoundRecorderModule.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/kevinresol/react_native_sound_recorder/RNSoundRecorderModule.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
               <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
@@ -59,7 +59,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/reactlibrary/RNSoundRecorderModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/kevinresol/react_native_sound_recorder/RNSoundRecorderModule.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
       </list>
     </option>
@@ -480,7 +480,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/reactlibrary/RNSoundRecorderModule.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/kevinresol/react_native_sound_recorder/RNSoundRecorderModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -488,7 +488,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/reactlibrary/RNSoundRecorderModule.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/kevinresol/react_native_sound_recorder/RNSoundRecorderModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />

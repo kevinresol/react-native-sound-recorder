@@ -37,7 +37,7 @@ Or `stopRecording` doesn't give a promise/callback at all. So forcing user to do
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import com.reactlibrary.RNSoundRecorderPackage;` to the imports at the top of the file
+  - Add `import com.kevinresol.react_native_sound_recorder.RNSoundRecorderPackage;` to the imports at the top of the file
   - Add `new RNSoundRecorderPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
@@ -116,5 +116,5 @@ Note that the above enums are platform-specific.
 - PATH_DOCUMENT 
 - PATH_LIBRARY (N/A on Android)
 
-[android constants]: https://github.com/kevinresol/react-native-sound-recorder/blob/master/android/src/main/java/com/reactlibrary/RNSoundRecorderModule.java#L40
+[android constants]: https://github.com/kevinresol/react-native-sound-recorder/blob/master/android/src/main/java/com/kevinresol/react_native_sound_recorder/RNSoundRecorderModule.java#L40
 [ios constants]: https://github.com/kevinresol/react-native-sound-recorder/blob/master/ios/RNSoundRecorder.m#L15

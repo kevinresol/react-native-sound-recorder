@@ -139,7 +139,7 @@ RCT_EXPORT_METHOD(start:(NSString *)path
 
 RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    if(!_recorder || !_recorder.isRecording) {
+    if(!_recorder) {
         reject(@"not_recording", @"Not Recording", nil);
         return;
     }
@@ -173,6 +173,35 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     resolve(response);
 
+}
+
+RCT_EXPORT_METHOD(pause:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    if(!_recorder || !_recorder.isRecording) {
+        reject(@"not_recording", @"Not Recording", nil);
+        return;
+    }
+    
+    [_recorder pause];
+    
+    resolve([NSNull null]);
+}
+
+RCT_EXPORT_METHOD(resume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    if(!_recorder) {
+        reject(@"not_recording", @"Not yet started recording", nil);
+        return;
+    }
+    
+    if(_recorder.isRecording) {
+        reject(@"already_recording", @"Already Recording", nil);
+        return;
+    }
+    
+    [_recorder record];
+    
+    resolve([NSNull null]);
 }
 
 @end
