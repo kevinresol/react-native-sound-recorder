@@ -14,7 +14,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 public class RNSoundRecorderPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new com.kevinresol.react_native_sound_recorder.RNSoundRecorderModule(reactContext));
+      return Arrays.<NativeModule>asList(new RNSoundRecorderModule(reactContext));
     }
 
 //    @Override
