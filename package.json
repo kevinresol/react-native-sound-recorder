@@ -2,7 +2,7 @@
 {
   "name": "react-native-sound-recorder",
   "version": "1.2.0",
-  "description": "",
+  "description": "Simplest Sound Recorder for React Native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,7 @@
   ],
   "author": "",
   "license": "",
+  "homepage": "https://github.com/kevinresol/react-native-sound-recorder#readme",
   "peerDependencies": {
     "react-native": "^0.46.0"
   }
