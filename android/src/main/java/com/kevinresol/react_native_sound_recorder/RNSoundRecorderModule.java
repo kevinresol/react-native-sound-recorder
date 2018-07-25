@@ -132,12 +132,14 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
     try {
       mRecorder.stop();
     } catch (Exception e) {
+      mRecorder.reset();
       mRecorder.release();
       mRecorder = null;
       promise.reject("stopping_failed", "Stop failed: " + e);
       return;
     }
 
+    mRecorder.reset();
     mRecorder.release();
     mRecorder = null;
 
@@ -148,7 +150,7 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
     WritableMap response = Arguments.createMap();
 
     response.putInt("duration", duration);
-    response.putString("path", mOutput);
+    response.putString("path", "file://" + mOutput);
     mOutput = null;
 
     promise.resolve(response);
