@@ -132,12 +132,14 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
     try {
       mRecorder.stop();
     } catch (Exception e) {
+      mRecorder.reset();
       mRecorder.release();
       mRecorder = null;
       promise.reject("stopping_failed", "Stop failed: " + e);
       return;
     }
 
+    mRecorder.reset();
     mRecorder.release();
     mRecorder = null;
 
@@ -160,7 +162,7 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
       promise.reject("not_recording", "Not Recording");
       return;
     }
-    
+
     try {
       mRecorder.pause();
       promise.resolve(null);
@@ -175,14 +177,14 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
       promise.reject("not_recording", "Not Recording");
       return;
     }
-    
+
     try {
       mRecorder.resume();
       promise.resolve(null);
     } catch (Exception e) {
       promise.reject("resuming_failed", "Resume failed: " + e);
     }
-    
+
   }
 
 
