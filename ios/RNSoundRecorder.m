@@ -66,6 +66,11 @@ RCT_EXPORT_MODULE()
     };
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 RCT_EXPORT_METHOD(start:(NSString *)path
                   options:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
