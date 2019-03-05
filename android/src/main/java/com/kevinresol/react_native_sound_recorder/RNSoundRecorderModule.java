@@ -119,6 +119,8 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
       promise.resolve(null);
     } catch (IOException e) {
       promise.reject("recording_failed", "Cannot record audio at path: " + path);
+    } catch (IllegalStateException e) {
+      promise.reject("recording_failed", "Microphone is already in use by another app.");
     }
   }
 
