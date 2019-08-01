@@ -14,6 +14,13 @@ import com.facebook.react.bridge.WritableMap;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+// for run time permission
+import androidx.core.app.ActivityCompat;
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 
 public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
 
@@ -72,12 +79,53 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void start(String path, ReadableMap options, Promise promise) {
-    if(mRecorder != null) {
-      promise.reject("already_recording", "Already Recording");
-      return;
+  public void start(final String path, final ReadableMap options, final Promise promise) {
+    if (mRecorder != null) {
+        promise.reject("already_recording", "Already Recording");
+        return;
     }
+    // permission
+    final Activity currentActivity = getCurrentActivity();
+    int readPermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.READ_EXTERNAL_STORAGE);
+    int writePermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    int recordingPermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.RECORD_AUDIO);
+    if (writePermission != PackageManager.PERMISSION_GRANTED
+            || readPermission != PackageManager.PERMISSION_GRANTED
+            || recordingPermission != PackageManager.PERMISSION_GRANTED
+    ) {
+        String[] PERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        };
+        ((PermissionAwareActivity) currentActivity).requestPermissions(PERMISSIONS, 1, new PermissionListener() {
+            @Override
+            public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+                if (requestCode == 1) {
+                    int readPermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.READ_EXTERNAL_STORAGE);
+                    int writePermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    int recordingPermission = ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.RECORD_AUDIO);
+                    if (writePermission != PackageManager.PERMISSION_GRANTED
+                            || readPermission != PackageManager.PERMISSION_GRANTED
+                            || recordingPermission != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // user rejected permission request
+                        promise.reject("permission ", "User rejected permission");
+                        return true;
+                    }
+                    // permissions available
+                    startRecording(path, options, promise);
+                    return true;
+                }
+                return true;
+            }
+        });
+    } else {
+        startRecording(path, options, promise);
+    }
+  }
 
+  private void startRecording(String path, ReadableMap options, Promise promise) {
     // parse options
     int source = MediaRecorder.AudioSource.DEFAULT;
     if(options.hasKey(OPTION_KEY_SOURCE))
