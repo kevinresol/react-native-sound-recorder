@@ -149,7 +149,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
         return;
     }
     
-    NSError* err = nil;
+    __block NSError* err = nil;
     
     [_recorder stop];
     
@@ -162,7 +162,10 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     _recorder = nil; // release it
     
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    [session setActive:NO error:&err];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(100.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [session setActive:NO error:&err];
+    });
     
     if (err) {
         reject(@"session_set_active_error", [[err userInfo] description], err);
