@@ -159,8 +159,6 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     AVAudioPlayer* player = [[AVAudioPlayer alloc] initWithContentsOfURL:[_recorder url] error:nil];
     NSDictionary* response = @{@"duration": @(player.duration * 1000), @"path": url};
     
-    _recorder = nil; // release it
-    
     AVAudioSession* session = [AVAudioSession sharedInstance];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(100.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -181,6 +179,14 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     resolve(response);
 
+}
+
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
+{
+    
+    // release the recorder
+    _recorder = nil; 
+    
 }
 
 RCT_EXPORT_METHOD(pause:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
