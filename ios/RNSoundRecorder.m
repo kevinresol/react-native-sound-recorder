@@ -4,6 +4,8 @@
 
 @implementation RNSoundRecorder {
     AVAudioRecorder* _recorder;
+    RCTPromiseResolveBlock _resolveStop;
+    RCTPromiseRejectBlock _rejectStop;
 }
 
 - (dispatch_queue_t)methodQueue
@@ -149,9 +151,16 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
         return;
     }
     
-    __block NSError* err = nil;
-    
+    _resolveStop = resolve;
+    _rejectStop = reject;
     [_recorder stop];
+
+}
+
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
+{
+    
+    __block NSError* err = nil;
     
     // prepare the response
     NSString* url = [_recorder url].absoluteString;
@@ -159,33 +168,28 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     AVAudioPlayer* player = [[AVAudioPlayer alloc] initWithContentsOfURL:[_recorder url] error:nil];
     NSDictionary* response = @{@"duration": @(player.duration * 1000), @"path": url};
     
+    // deactivate the audio session
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(100.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [session setActive:NO error:&err];
-    });
+    [session setActive:NO error:&err];
     
     if (err) {
-        reject(@"session_set_active_error", [[err userInfo] description], err);
+        _rejectStop(@"session_set_active_error", [[err userInfo] description], err);
         return;
     }
     
     [session setCategory:AVAudioSessionCategoryPlayback error:&err];
     
     if (err) {
-        reject(@"reset_session_error", [[err userInfo] description], err);
+        _rejectStop(@"reset_session_error", [[err userInfo] description], err);
         return;
     }
     
-    resolve(response);
-
-}
-
-- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
-{
+    _resolveStop(response);
     
-    // release the recorder
-    _recorder = nil; 
+    // release the recorder promise resolver
+    _recorder = nil;
+    _resolveStop = nil;
+    _rejectStop = nil;
     
 }
 
