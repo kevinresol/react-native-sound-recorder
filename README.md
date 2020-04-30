@@ -118,7 +118,7 @@ Android:
 - `format`:Enum (Check out the [constants][android constants] prefixed with `"FORMAT_"`)
 - `encoder`:Enum (Check out the [constants][android constants] prefixed with `"ENCODER_"`)
 - `channels`:Int (1 or 2), default: 1
-- `bitRate`:Int, default: 64000
+- `encodingBitRate`:Int, default: 64000
 - `sampleRate`:Int default: 16000
 
 Note that the above enums are platform-specific.
