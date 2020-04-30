@@ -20,6 +20,17 @@ Or `stopRecording` doesn't give a promise/callback at all. So forcing user to do
 
 `$ npm install react-native-sound-recorder --save`
 
+or
+
+`$ yarn add react-native-sound-recorder`
+
+
+**if RN >= 0.60.0**
+
+Autolink should work
+
+**if RN < 0.60.0**
+
 ### Mostly automatic installation
 
 `$ react-native link react-native-sound-recorder`
