@@ -170,7 +170,14 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     // deactivate the audio session
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    [session setActive:NO error:nil];
+    [session setActive:NO error:&err];
+    
+    if (err && [err code] != AVAudioSessionErrorCodeIsBusy) {
+        _rejectStop(@"session_set_active_error", [[err userInfo] description], err);
+        return;
+    }
+    
+    err = nil;
     
     [session setCategory:AVAudioSessionCategoryPlayback error:&err];
     
