@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(start:(NSString *)path
     NSError* err = nil;
 
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryRecord error:&err];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&err];
     
     if (err) {
         reject(@"init_session_error", [[err userInfo] description], err);
@@ -170,12 +170,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejec
     
     // deactivate the audio session
     AVAudioSession* session = [AVAudioSession sharedInstance];
-    [session setActive:NO error:&err];
-    
-    if (err) {
-        _rejectStop(@"session_set_active_error", [[err userInfo] description], err);
-        return;
-    }
+    [session setActive:NO error:nil];
     
     [session setCategory:AVAudioSessionCategoryPlayback error:&err];
     
