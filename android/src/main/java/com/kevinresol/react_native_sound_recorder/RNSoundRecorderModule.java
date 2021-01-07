@@ -81,11 +81,11 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
     // parse options
     int source = MediaRecorder.AudioSource.DEFAULT;
     if(options.hasKey(OPTION_KEY_SOURCE))
-      source = options.getInt(OPTION_KEY_SOURCE);
+      source = (int) getConstants().get(options.getString(OPTION_KEY_SOURCE));
 
     int format = MediaRecorder.OutputFormat.DEFAULT;
     if(options.hasKey(OPTION_KEY_FORMAT))
-      format = options.getInt(OPTION_KEY_FORMAT);
+      format = (int) getConstants().get(options.getString(OPTION_KEY_FORMAT));
 
     int channels = 1;
     if(options.hasKey(OPTION_KEY_CHANNELS))
@@ -97,7 +97,7 @@ public class RNSoundRecorderModule extends ReactContextBaseJavaModule {
 
     int encoder = MediaRecorder.AudioEncoder.DEFAULT;
     if(options.hasKey(OPTION_KEY_ENCODER))
-      encoder = options.getInt(OPTION_KEY_ENCODER);
+      encoder = (int) getConstants().get(options.getString(OPTION_KEY_ENCODER));
 
     int sampleRate = 16000;
     if(options.hasKey(OPTION_KEY_SAMPLE_RATE))
