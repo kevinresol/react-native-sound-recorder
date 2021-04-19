@@ -1,6 +1,18 @@
 
 # react-native-sound-recorder
 
+## Sound Level for android 
+
+For ios use `react-native-sound-level`
+
+```javascript
+SoundRecorder.start(SoundRecorder.PATH_CACHE + '/sound.mp4').then(function(){
+    SoundRecorder.onNewFrame = (dataWave) => {
+        console.log('data', dataWave)
+    }
+})
+```
+
 No-hassle Sound Recorder for React Native.
 
 #### There are existing libraries out in the wild
