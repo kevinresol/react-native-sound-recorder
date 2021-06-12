@@ -91,6 +91,22 @@ SoundRecorder.stop()
 		console.log('stopped recording, audio file saved at: ' + result.path);
 	});
 	
+//usage with Options:
+
+```
+ SoundRecorder.start(
+        SoundRecorder.PATH_CACHE + '/' + fileName + '.mp4',
+        {
+          quality: SoundRecorder.QUALITY_MAX,
+          format : SoundRecorder.FORMAT_AAC_ADTS,
+
+        }
+      ).then(function () {
+       
+ 
+      });
+```
+	
 ```
   
   
