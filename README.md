@@ -91,9 +91,9 @@ SoundRecorder.stop()
 		console.log('stopped recording, audio file saved at: ' + result.path);
 	});
 	
-//usage with Options:
+// Usage with Options:
 
-```
+
  SoundRecorder.start(
         SoundRecorder.PATH_CACHE + '/' + fileName + '.mp4',
         {
@@ -107,7 +107,7 @@ SoundRecorder.stop()
       });
 ```
 	
-```
+
   
   
 ## API
